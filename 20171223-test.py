@@ -12,7 +12,7 @@ df = pd.DataFrame({"borough":["A", "B", "B", "A", "A"], "title":["Book2", "Book1
 top_boroughs = df.groupby(['borough','title'])
 top_boroughs.aggregate(sum).sort(['total_loans','title'], ascending=False)
 
-df.groupby(['borough','title']).max('total_loans').head(3)
+df.groupby('borough')['total_loans'].max()
 
 
 df.groupby(level=[0,1]).sum().reset_index().sort_values(['borough', 'total_loans'], ascending=[1,0]).groupby('borough').head(3)

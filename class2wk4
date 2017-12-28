@@ -6,3 +6,31 @@ https://en.wikipedia.org/wiki/List_of_Presidents_of_the_United_States
 
 Political Parties of the Presidents:
 https://www.presidentsusa.net/partyofpresidents.html
+
+import os
+import pandas as pd
+import numpy as np
+import xlrd
+import matplotlib.pyplot as plt
+import seaborn as sns
+import re
+from datetime import datetime, timedelta
+
+#parameters
+homedir='/Users/ifp102/Documents/misc'
+file_election='presidential_election_results.csv'
+file_party='presidents_party.csv'
+
+os.chdir(homedir)
+
+#read source files to df
+df_results=pd.read_csv(file_election, usecols=['Year','Candidates'])
+df_party=pd.read_csv(file_party)
+
+
+df_results['name']=df_results['Candidates'].apply(lambda x: re.search('(^.*)won',x).group(1).strip())
+df_results['percent']=df_results['Candidates'].apply(lambda x: re.search('(\d+)%',x).group(1))
+
+df_party_change=pd.merge(df_results,df_party,left_on='name',right_on='president',how='left')
+
+df_party.dtypes
